@@ -55,3 +55,31 @@ def main_menu():
             session.add(game)
             session.commit()
 
+            while guesses_count < 10 and not won:
+                guesses_input = input(f"Guess {guesses_count + 1}s").strip
+
+                if len(guesses_input) !=4 or not guesses_input.isdigit()
+                    print("Enter 4-digit number")
+                    continue
+
+                guesses_count += 1
+                bulls, cows = check_guess(secret_number, guesses_input)
+                print(f"{bulls} Bulls, {cows} Cows")
+
+                save_guess(game, guesses_input, bulls, cows)
+
+                if bulls == 4:
+                    won = True
+                    game.status = "won"
+                    game.guesses_taken = guesses_count
+                    print(f"You won in {guesses_count} guesses")
+
+            if not won:
+                game.status = "lost"
+                game.guesses_taken = guesses_count
+                print(f"Game over! Number was {secret_number}")
+
+            session.commit()
+            print("Game saved")
+        
+        
