@@ -15,4 +15,6 @@ def main_menu():
             print("5. View my stats")
         print("6. Exit")
 
+        choice = input("Choose option: ").strip()
+
         
