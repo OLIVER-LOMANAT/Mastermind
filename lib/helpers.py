@@ -16,3 +16,9 @@ def check_guess(secret, guess):
             cows += 1
     return bulls, cows
 
+def create_player(username):
+    player = Player(username=username)
+    session.add(player)
+    session.commit()
+    return player
+
