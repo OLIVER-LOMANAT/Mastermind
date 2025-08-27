@@ -17,4 +17,41 @@ def main_menu():
 
         choice = input("Choose option: ").strip()
 
+        if choice == "1":
+            username = input("Enter username: ").strip()
+            if find_player_by_username(username):
+                print("Username taken!")
+            else:
+                current_player = create_player(username)
+                print(f"Player {username} created")
         
+        elif choice == "2":
+            players = get_all_players()
+            if players:
+                for player in players:
+                    print(f"{player.username}")
+            else:
+                print("No players found")
+
+        elif choice == 3:
+            username = input("Enter username: ")
+            player = find_player_by_username(username)
+            if player:
+                create_player = player
+                print(f"Hello {current_player.username}")
+            else:
+                print("Player not found")
+
+        elif choice == 4 and current_player:
+            secret_number = generate_secret_number()
+            guesses_count = 0
+            won = False
+
+            game = Game(
+                player_id = current_player.id,
+                secret_number = secret_number,
+                status = "in_progress"
+            )
+            session.add(game)
+            session.commit()
+
