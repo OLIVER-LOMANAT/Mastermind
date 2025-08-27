@@ -22,3 +22,19 @@ def create_player(username):
     session.commit()
     return player
 
+def get_all_players():
+    return session.query(Player).all()
+
+def find_player_by_username(username):
+    return session.query(Player).filter(Player.username == username).first()
+
+def get_player_games(player_id):
+    return session.query(Game).filter(Game.player_id == player_id).all()
+
+def save_guess(game, guess_number, bulls, cows):
+    """Save a guess and link it to the game"""
+    guess = Guess(guess_number=guess_number, bulls=bulls, cows=cows)
+    session.add(guess)
+    game.guesses.append(guess) 
+    session.commit()
+    return guess
