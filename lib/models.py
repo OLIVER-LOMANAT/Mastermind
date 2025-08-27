@@ -10,7 +10,7 @@ session = Session()
 game_guess_association = Table(
     'game_guesses',
     Base.metadata,
-    Column('game_id', Integer, ForeignKey('games.id'), primary_key=True)
+    Column('game_id', Integer, ForeignKey('games.id'), primary_key=True),
     Column('guess_id', Integer, ForeignKey('guesses.id'), primary_key=True)
 )
 
@@ -49,4 +49,4 @@ class Guess(Base):
 
     games = relationship("Game", secondary=game_guess_association, back_populates="guesses")
 
-    
+Base.metadata.create_all(engine)    
