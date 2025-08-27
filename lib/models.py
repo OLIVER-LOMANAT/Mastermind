@@ -22,8 +22,18 @@ class Player(Base):
     created_at = Column(DateTime, default=datetime.now)
 
     games = relationship("Game", back_populates="player")
+    
 
-    def __repr__(self):
-        return f"<Player {self.username}>"
-    
-    
+class Game(Base):
+    __tablename__ = 'games'
+
+    id = Column(Integer, primary_key=True)
+    player_id = Column(Integer, ForeignKey('players.id'))
+    secret_number = Column(String, nullable=False)
+    status = Column(String, default="in_progress")
+    guesses_taken = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.now)
+
+    player = relationship("Player", back_populates="games")
+
+    guesses = relationship("Guess", secondary=game_guess_association, back_populates="games")
