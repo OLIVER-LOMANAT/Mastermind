@@ -37,3 +37,16 @@ class Game(Base):
     player = relationship("Player", back_populates="games")
 
     guesses = relationship("Guess", secondary=game_guess_association, back_populates="games")
+
+class Guess(Base):
+    __tablename__ = 'guesses'
+
+    id = Column(Integer, primary_key=True)
+    guess_number = Column(String, nullable=False)
+    bulls = Column(Integer, nullable=False)
+    cows = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+
+    games = relationship("Game", secondary=game_guess_association, back_populates="guesses")
+
+    
