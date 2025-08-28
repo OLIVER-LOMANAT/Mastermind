@@ -49,4 +49,4 @@ class Guess(Base):
 
     games = relationship("Game", secondary=game_guess_association, back_populates="guesses")
 
-Base.metadata.create_all(engine)    
+# Base.metadata.create_all(engine)    
