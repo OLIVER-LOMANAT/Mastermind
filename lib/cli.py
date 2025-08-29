@@ -1,54 +1,60 @@
+import click
 from helpers import *
 from models import session
-from helpers import save_guess 
 
-def main_menu():
+@click.group()
+def cli():
+    """Bulls & Cows Game"""
+    pass
+
+@cli.command()
+def menu():
+    """Start the game menu"""
     current_player = None
 
     while True:
-        print("\n--- Bulls & Cows Game ---")
-        print("1. Create new player")
-        print("2. List all players")
-        print("3. Select player")
+        click.echo("\n--- Bulls & Cows Game ---")
+        click.echo("1. Create new player")
+        click.echo("2. List all players")
+        click.echo("3. Select player")
         if current_player:
-            print(f"4. Play game ({current_player.username})")
-            print("5. View my stats")
-        print("6. Exit")
+            click.echo(f"4. Play game ({current_player.username})")
+            click.echo("5. View my stats")
+        click.echo("6. Exit")
 
-        choice = input("Choose option: ").strip()
+        choice = click.prompt("Choose option", type=str)
 
         if choice == "1":
-            username = input("Enter username: ").strip()
+            username = click.prompt("Enter username")
             if find_player_by_username(username):
-                print("Username taken!")
+                click.echo("Username taken!")
             else:
                 current_player = create_player(username)
-                print(f"Player {username} created!")
+                click.echo(f"Player {username} created!")
 
         elif choice == "2":
             players = get_all_players()
             if players:
                 for player in players:
-                    print(f"- {player.username}")
+                    click.echo(f"- {player.username}")
             else:
-                print("No players found")
+                click.echo("No players found")
 
         elif choice == "3":
-            username = input("Enter username: ").strip()
+            username = click.prompt("Enter username")
             player = find_player_by_username(username)
             if player:
                 current_player = player
-                print(f"Hello {current_player.username}!")
+                click.echo(f"Hello {current_player.username}!")
             else:
-                print("Player not found")
+                click.echo("Player not found")
 
         elif choice == "4" and current_player:
-            print("\nNew game started!")
+            click.echo("\nNew game started!")
             secret_number = generate_secret_number()
             guesses_count = 0
             won = False
 
-            # Create game 
             game = Game(
                 player_id=current_player.id,
                 secret_number=secret_number,
@@ -58,52 +64,55 @@ def main_menu():
             session.commit()
 
             while guesses_count < 10 and not won:
-                guess_input = input(f"Guess #{guesses_count + 1}: ").strip()
+                guess_input = click.prompt(f"Guess{guesses_count + 1}", type=str)
 
                 if len(guess_input) != 4 or not guess_input.isdigit():
-                    print("Enter 4-digit number")
+                    click.echo("Enter 4-digit number")
                     continue
 
                 guesses_count += 1
                 bulls, cows = check_guess(secret_number, guess_input)
-                print(f"{bulls} Bulls, {cows} Cows")
+                click.echo(f"{bulls} Bulls, {cows} Cows")
 
-                # Save guess
                 save_guess(game, guess_input, bulls, cows)
 
                 if bulls == 4:
                     won = True
                     game.status = "won"
                     game.guesses_taken = guesses_count
-                    print(f"You won in {guesses_count} guesses!")
+                    click.echo(f"You won in {guesses_count}guesses")
 
             if not won:
                 game.status = "lost"
                 game.guesses_taken = guesses_count
-                print(f"Game over! Number was {secret_number}")
+                click.echo(f"Game over! Number was {secret_number}")
 
             session.commit()
-            print("Game saved!")
+            click.echo("Game saved!")
 
         elif choice == "5" and current_player:
             games = get_player_games(current_player.id)
             if games:
                 wins = sum(1 for game in games if game.status == 'won')
                 total = len(games)
-                print(f"\n{current_player.username}'s Stats:")
-                print(f"Games: {total}")
-                print(f"Wins: {wins}")
-                print(f"Win %: {wins / total * 100:.1f}%" if total > 0 else "Win %: 0%")
+                click.echo(f"\n{current_player.username}Stats")
+                click.echo(f"Games: {total}")
+                click.echo(f"Wins: {wins}")
+                if total > 0:
+                    click.echo(f"Win: {wins / total * 100:.1f}")
+                else:
+                    click.echo("Win:0")
             else:
-                print("No games played")
+                click.echo("No games played")
 
         elif choice == "6":
-            print("Goodbye!")
+            click.echo("Goodbye!")
             session.close()
             break
 
         else:
-            print("Invalid choice")
+            click.echo("Wrong choice")
 
 if __name__ == "__main__":
-    main_menu()
+    cli()
+
