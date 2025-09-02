@@ -32,7 +32,7 @@ This is a command-line game where players guess a secret 4-digit number. The gam
 
 ## Usage
 
-1.  **Run the game** from the project's root directory:
+1.  **Run the game** from the project's root directory
     ```bash
     pipenv run python lib/cli.py
     ```
