@@ -2,61 +2,76 @@
 
 This is a command-line game where players guess a secret 4-digit number. The game tracks player stats and saves all game results to a database.
 
-## What it does
+## What It Does
 
-- Lets you create and select player profiles
-- Generates a random 4-digit number for you to guess
-- Gives hints with "Bulls" (correct digit in correct position) and "Cows" (correct digit in wrong position)
-- Saves all game results to a SQLite database using SQLAlchemy ORM
-- Shows your personal statistics and win rate
-- Tracks your game history
+- Allows you to **create and select player profiles**.
+- Generates a random **4-digit number with no repeating digits** for you to guess.
+- Provides hints using "Bulls" (correct digit in the correct position) and "Cows" (correct digit in the wrong position).
+- Saves all game results and guesses to a SQLite database using **SQLAlchemy ORM**.
+- Shows your personal statistics, including your **win rate**.
+- Tracks your game history.
 
-## How to use it
+## Prerequisites
 
-1. Make sure you have Python and Pipenv installed on your computer
-2. Download all the project files
-3. Open your terminal or command prompt
-4. Navigate to the project folder
-5. Install dependencies: `pipenv install`
-6. Set up the database: `pipenv run alembic upgrade head`
-7. Run the game: `pipenv run python lib/cli.py`
-8. Follow the menu options to create a player and start playing
+- **Python 3.x** installed.
+- **Pipenv** for dependency management.
+- No internet connection required; everything runs locally.
 
-## Game rules
+## Installation
 
-- The computer generates a random 4-digit number with no repeating digits
-- You have 10 guesses to figure out the number
-- After each guess, you get:
-  - Bulls: How many digits are correct and in the right position
-  - Cows: How many digits are correct but in the wrong position
-- Try to guess the number in as few tries as possible!
+1.  **Clone the repository** to your local machine.
+2.  Navigate to the project's root directory in your terminal.
+3.  **Install dependencies**:
+    ```bash
+    pipenv install
+    ```
+4.  **Set up the database**:
+    ```bash
+    pipenv run alembic upgrade head
+    ```
 
-## What you need
+## Usage
 
-- Python 3.x installed
-- Pipenv for dependency management
-- No internet connection required (everything runs locally)
+1.  **Run the game** from the project's root directory:
+    ```bash
+    pipenv run python lib/cli.py
+    ```
+2.  Follow the interactive menu to select your desired option.
 
-## Files included
+    - **1. Create new player**: Enter a unique username to create a new profile.
+    - **2. List all players**: See a list of all existing player profiles.
+    - **3. Select player**: Choose an existing player by entering their username. This is required before you can play a game.
+    - **4. Play game**: Start a new game with the currently selected player. You will be prompted to enter your 4-digit guesses.
+    - **5. View my stats**: See your personal game history, including total games played, wins, and your win percentage.
+    - **6. Exit**: Close the game.
 
-- `lib/cli.py` - The main game program
-- `lib/models.py` - SQLAlchemy database models
-- `lib/helpers.py` - Game functions
-- `alembic/` - Database migration files
+3.  **To play a game**, you must first select or create a player. The game will prompt you to enter a 4-digit number for each guess. A response of "4 Bulls, 0 Cows" means you have won!
 
-## Note
+## Game Rules
 
-The game uses SQLAlchemy ORM with Alembic migrations to create and manage the database. All data is stored in a SQLite database file called `bulls_and_bulls.db`.
+- The secret number is a random 4-digit number with no repeating digits (e.g., `1234`, not `1123`).
+- You have **10 guesses** to figure out the number.
+- **Bulls** are correct digits in the correct position.
+- **Cows** are correct digits but in the wrong position.
+- The goal is to guess the number in as few tries as possible.
 
-## How to run
+## Files Included
 
-```bash
+- `lib/cli.py`: The main game program and command-line interface.
+- `lib/models.py`: Defines the SQLAlchemy database models (`Player`, `Game`, `Guess`).
+- `lib/helpers.py`: Contains helper functions for game logic (e.g., generating the secret number, checking guesses).
+- `alembic/`: Database migration files for managing the database schema.
 
-pipenv install
+## Author
 
-# Set up database migrations
-pipenv run alembic upgrade head
+- **Oliver Ekeno** - [https://github.com/OLIVER-LOMANAT/Mastermind](https://github.com/OLIVER-LOMANAT/Mastermind)
 
-# Run the game
-pipenv run python lib/cli.py
-```
+## Contribution Guidelines
+
+If you would like to contribute, please follow these steps:
+
+1.  **Fork** the repository.
+2.  Create a new feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a **Pull Request**.
